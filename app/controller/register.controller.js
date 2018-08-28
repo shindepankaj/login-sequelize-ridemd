@@ -8,56 +8,69 @@ exports.create = (req, res) => {
 
 	console.log("----", req.body);
 
-	bcrypt.hash(req.body.password, 10, function(error, hash) {
-		// Store hash in database
-		// Save to MySQL database
-		User.create({  
-			name: req.body.name,
-			email: req.body.email,
-			password: hash
-		}).then(user => {		
-			// Send created customer to client
-				if (error) {
-						res.json({
-								status:false,
-								message:'there are some error with query'
-						})
-				}else{
-						res.json({
-								status:true,
-								data:user,
-								message:'user registered sucessfully'
-						})
-				}
-
-		});
-
+	User.findOne({ where: { email: req.body.email } }).then(user => {
+		if(user) {
+			res.status(200).send('User already exists.');
+		} else {
+			bcrypt.hash(req.body.password, 10, function(error, hash) {
+				// Store hash in database
+				// Save to MySQL database
+				User.create({  
+					name: req.body.name,
+					email: req.body.email,
+					password: hash
+				}).then(user => {		
+					// Send created customer to client
+						if (error) {
+								res.json({
+										status:false,
+										message:'there are some error with query'
+								})
+						}else{
+								res.json({
+										status:true,
+										data:user,
+										message:'user registered sucessfully'
+								})
+						}
+		
+				});
+		
+			});
+		}
 	});
 
 };
 
 // Disable User
 exports.disableUser = (req, res) => {
-	// User.findAll().then(customers => {
-	//   // Send all customers to Client
-	//   res.send(customers);
-	// });
-
-	// User.findOne({ where: {email: req.body.email} }).then(user => {
-	// });
-
-
-	User.findOne().then(user => {
-
-		console.log('---- ', user);
-
-
-
-		res.send(user);
-
+	User.findOne({ where: { email: req.body.email } }).then(user => {
+		if(user) {
+			user.enabled = false;
+			user.save().then(() => {
+				console.log('--1-- ', user.enabled);
+			});
+			res.status(200).send('User disabled successfully.');
+		} else {
+			res.status(200).send('User not found.');
+		}
 	});
 };
 
+// Enable User
+exports.enableUser = (req, res) => {
+	User.findOne({ where: { email: req.body.email } }).then(user => {
+		if(user) {
+			user.enabled = true;
+			user.save().then(() => {
+				console.log('--1-- ', user.enabled);
+			});
+			res.status(200).send('User enabled successfully.');
+		} else {
+			res.status(200).send('User not found.');
+		}
+	});
+};
 
 // // FETCH all Customers
 // exports.findAll = (req, res) => {
