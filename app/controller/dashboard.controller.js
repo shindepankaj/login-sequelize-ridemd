@@ -7,7 +7,10 @@ exports.fetchAllUsers = (req, res) => {
 
 	// res.send('Token Verified - ' + req.headers['token'])
 
-	User.findAll().then(users => {
+	// paginated users
+	User.findAll({
+		limit: 10, offset: (req.body.pageNumber-1) * 10
+	}).then(users => {
 		// Send all users to Client
 		res.send(users);
 	});
