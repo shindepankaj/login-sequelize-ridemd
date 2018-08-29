@@ -8,12 +8,14 @@ var jwt= require("jsonwebtoken");
 
 const db = require('./app/config/db.config.js');
 
+const User = db.users;
+
 process.env.SECRET_KEY="thisismysecretkey";
 
-// force: true will drop the table if it already exists
-db.sequelize.sync({force: false, alter: true}).then(() => {
-  console.log('Drop and Resync with { force: false }');
-});
+// // force: true will drop the table if it already exists
+// db.sequelize.sync({force: false, alter: true}).then(() => {
+//   console.log('Drop and Resync with { force: false }');
+// });
  
 require('./app/route/user.route.js')(app);
 
@@ -39,7 +41,33 @@ router.use(function(req,res,next){
 //     res.send('Token Verified - ' + req.headers['token'])
 // })
 
+var mainFunction = function () {
+    const init = () => {
+        functionOne();
+        functionTwo();
+    }
 
+    function functionOne() {
+        console.log("functionOne executed....");
+
+        // use raw: true to 
+        User.findAll({raw: true}).then(users => {
+            console.log('.... ', users);
+        });
+    }
+
+    function functionTwo() {
+        console.log("functionTwo executed....");
+    
+    }
+
+    return {
+        init: init
+    }
+
+}();
+
+mainFunction.init();
 
 // Create a Server
 var server = app.listen(8082, function () {
