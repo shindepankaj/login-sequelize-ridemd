@@ -15,11 +15,10 @@ const sequelize = new Sequelize(env.database, env.username, env.password, {
     idle: env.pool.idle
   }
 });
- 
 
-console.log('\n\n\n\n\n\n\n\n\n\n');
+console.log('\n');
 console.log('******* database connection established *****');
-console.log('\n\n\n\n\n\n\n\n\n\n');
+console.log('\n');
 
 const db = {};
  
