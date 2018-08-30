@@ -6,7 +6,7 @@ const sequelize = new Sequelize(env.database, env.username, env.password, {
   dialect: env.dialect,
   operatorsAliases: false,
  
-  sync: { force: true, alter: true },
+  // sync: { force: true, alter: true },
 
   pool: {
     max: env.max,
@@ -15,6 +15,13 @@ const sequelize = new Sequelize(env.database, env.username, env.password, {
     idle: env.pool.idle
   }
 });
+//.sync({force: false, alter: true}).then(() => {
+    // console.log('Drop and Resync with { force: false }');
+  // });
+
+// sequelize.sync({force: false, alter: true}).then(() => {
+  // console.log('Drop and Resync with { force: false }');
+// });
 
 console.log('\n');
 console.log('******* database connection established *****');
@@ -27,6 +34,8 @@ db.sequelize = sequelize;
  
 //Models/tables
 db.users = require('../model/user.model.js')(sequelize, Sequelize);
- 
+db.roles = require('../model/role.model.js')(sequelize, Sequelize);
+
+db.roles.hasMany(db.users); 
  
 module.exports = db;
