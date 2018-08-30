@@ -16,6 +16,11 @@ const sequelize = new Sequelize(env.database, env.username, env.password, {
   }
 });
  
+
+console.log('\n\n\n\n\n\n\n\n\n\n');
+console.log('******* database connection established *****');
+console.log('\n\n\n\n\n\n\n\n\n\n');
+
 const db = {};
  
 db.Sequelize = Sequelize;

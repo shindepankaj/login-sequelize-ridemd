@@ -9,12 +9,13 @@ exports.fetchAllUsers = (req, res) => {
 
 	// paginated users
 	User.findAll({
-		limit: 10, offset: (req.body.pageNumber-1) * 10
+		limit: 10, offset: (req.body.pageNumber-1) * 10, raw: true
 	}).then(users => {
+		// for readable representation of users array
+		console.log(JSON.stringify(users, null, 2));
 		// Send all users to Client
 		res.send(users);
 	});
-
 
 };
 
