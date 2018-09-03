@@ -16,6 +16,11 @@ var constants = require('./app/lib/constants.js');
 
 process.env.SECRET_KEY="thisismysecretkey";
 
+// helpers explained
+var helpers = require('./app/helpers/helper');
+var result = helpers.concatenateNames('pankaj', 'shinde')
+console.log('... ' + result);
+
 // // force: true will drop the table if it already exists
 db.sequelize.sync({force: false, alter: true}).then(() => {
   console.log('Drop and Resync with { force: false }');
