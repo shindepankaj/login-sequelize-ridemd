@@ -8,6 +8,9 @@ const sequelize = new Sequelize(env.database, env.username, env.password, {
  
   // sync: { force: true, alter: true },
 
+  // disable logging; default: console.log
+  logging: false,
+
   pool: {
     max: env.max,
     min: env.pool.min,
