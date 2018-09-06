@@ -1,6 +1,8 @@
 const db = require('../config/db.config.js');
 const User = db.users;
 
+var nodeMailer = require('nodemailer');
+
 const bcrypt = require('bcrypt');
 
 // Add User
@@ -71,6 +73,52 @@ exports.enableUser = (req, res) => {
 		}
 	});
 };
+
+// send email
+exports.sendMail = (req, res) => {
+	/*
+	Email credentials - pankaj.k.shinde@gmail.com
+	Server Name: email-smtp.us-west-2.amazonaws.com
+	Port: 25, 465 or 587 - Use 587
+	SMTP Username: AKIAJVMDHWFAMI4ZLXKQ
+	SMTP Password: Aju/swuJy1QJ4g7jG0RtzV0yAVbm1NoatAyajHX/pCzt
+	*/
+	let transporter = nodeMailer.createTransport({
+		/*
+		host: 'smtp.gmail.com',
+		port: 465,
+		secure: true,
+		auth: {
+			user: 'hehaha.2010@gmail.com',
+			pass: 'password'
+		}
+        */
+		host: 'email-smtp.us-west-2.amazonaws.com',
+		port: 465,
+		secure: true,
+		auth: {
+			user: 'AKIAJVMDHWFAMI4ZLXKQ',
+			pass: 'Aju/swuJy1QJ4g7jG0RtzV0yAVbm1NoatAyajHX/pCzt'
+        }
+	});
+	let mailOptions = {
+		from: '"Pankaj Shinde" <pankaj.k.shinde@gmail.com>', // sender address
+		to: 'shindepankaj1977@gmail.com', // list of receivers
+		subject: 'req.body.subject', // Subject line
+		// text: 'req.body.body' // plain text body
+		html: '<b>NodeJS Email Tutorial</b>' // html body
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+		if (error) {
+            res.status(200).send('Email sending failed.');
+		} else {
+			console.log('Message %s sent: %s', info.messageId, info.response);
+            res.status(200).send('Email sent successfully.');
+        }
+    });
+};
+
 
 // // FETCH all Customers
 // exports.findAll = (req, res) => {

@@ -19,4 +19,7 @@ module.exports = function(app) {
     // Disable User
     app.post('/secure-api/enableUser', registerController.enableUser);
 
+    // Send email
+    app.post('/secure-api/sendMail', registerController.sendMail);
+
 }
