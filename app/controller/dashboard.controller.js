@@ -1,5 +1,5 @@
 
-const db = require('../config/db.config.js');
+const db = require('../config/db.init.js');
 const User = db.users;
 
 // Fetch all users

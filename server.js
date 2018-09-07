@@ -1,3 +1,6 @@
+
+// set NODE_ENV=dev && nodemon server.js
+
 var express = require('express');
 var router=express.Router();
 var app = express();
@@ -6,7 +9,7 @@ app.use(bodyParser.json())
  
 var jwt= require("jsonwebtoken");
 
-const db = require('./app/config/db.config.js');
+const db = require('./app/config/db.init.js');
 
 const User = db.users;
 const Role = db.roles;
@@ -21,8 +24,12 @@ var helpers = require('./app/helpers/helper');
 var result = helpers.concatenateNames('pankaj', 'shinde')
 console.log('... ' + result);
 
-// // force: true will drop the table if it already exists
-db.sequelize.sync({force: false, alter: true}).then(() => {
+// force: true will drop the table if it already exists
+/**
+ * Sync all defined models to the DB.
+ * force: true will drop the table if it already exists
+ */
+db.sequelize.sync({force: false}).then(() => {
   console.log('Drop and Resync with { force: false }');
 });
  
